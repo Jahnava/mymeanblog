@@ -48,6 +48,13 @@
           access: false
         }
       })
+      .when('/read/:postId',{
+        controller: 'ReadController',
+        templateUrl: 'html/views/read.html',
+        restricted: {
+          access: false
+        }
+      })
       .otherwise({
         redirectTo: '/',
         restricted: {
