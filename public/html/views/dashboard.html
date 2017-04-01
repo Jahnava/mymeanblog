@@ -3,9 +3,14 @@
 <hr>
 <ul>
   <li ng-repeat='post in posts'>
-    {{ post.title }}
-    {{ post.body.slice(0, 100) + '...'}}
-    <button ng-click="edit(post)">E</button>
-    <button ng-click="delete(post)">&times;</button>
+    <div>
+      {{ post.title }}
+      {{ post.body.slice(0, 100) + '...'}}
+      <button ng-click="edit(post)">E</button>
+      <button ng-click="delete(post)">&times;</button>
+    </div>
+    <div>
+      <small>by {{ post.author }}</small>
+    </div>
   </li>
 </ul>

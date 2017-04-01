@@ -2,28 +2,23 @@
   angular.module('mymeanblog')
         .controller('DashboardController', DashboardController);
 
-  DashboardController.$inject = ['$scope'];
+  DashboardController.$inject = ['$scope', 'PostService'];
 
-  function DashboardController($scope){
+  function DashboardController($scope, PostService){
       $scope.edit = edit;
       $scope.delete = deletePost;
-      $scope.posts = [
-        {
-          _id: 'hsdkfhsj3787sdf627ysd67823',
-          title: 'some title',
-          body: 'things and stuff and things and stuff and things and stuff',
-          created: new Date(),
-          updated: new Date()
-        },
-        {
-          _id: 'hsdkfhsj3787sdf627ysd67823',
-          title: 'some title',
-          body: 'things and stuff and things and stuff and things and stuff',
-          created: new Date(),
-          updated: new Date()
-        },
-      ]
+      $scope.posts = []
 
+      populatePosts();
+      function populatePosts(){
+        PostService.getAll()
+                   .then(function(response){
+                     $scope.posts = response.data.posts
+                   })
+                   .catch(function(err){
+                     console.log(err);
+                   });
+      }
       function edit(post){
         console.log('moving to the edit page');
       }

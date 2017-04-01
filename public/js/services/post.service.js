@@ -7,10 +7,7 @@
   function PostService($http){
     var base = '/posts';
     function getAll(){
-      return $http.get(base)
-                  .then(function(response){
-                    console.log(response);
-                  });
+      return $http.get(base);
     }
     function getOne(id){
       var url = `${base}/${id}`;
