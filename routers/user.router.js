@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
 const passport = require('passport');
+const signature = process.env.SIGNATURE || require('../secrets').SIGNATURE;
+const expressJWT = require('express-jwt');
+const auth = expressJWT({
+  secret: signature,
+  userProperty: 'payload'
+});
 
 router.post('/signup', function(req, res){
   var user = new User(req.body);
@@ -53,7 +59,12 @@ router.get('/users', function(req, res){
     }
   });
 });
-router.get('/users/:id', function(req, res){
+router.get('/users/:id', auth, function(req, res){
+  if(req.payload._id !== req.params.id){
+    res.status(403).json({
+      msg: 'Unauthorized'
+    });
+  }
   User.find({_id: req.params.id}, function(err, users){
     if(err){
       res.status(500).json({
@@ -66,7 +77,12 @@ router.get('/users/:id', function(req, res){
     }
   });
 });
-router.put('/users/:id', function(req, res){
+router.put('/users/:id', auth, function(req, res){
+  if(req.payload._id !== req.params.id){
+    res.status(403).json({
+      msg: 'Unauthorized'
+    });
+  }
   User.findOneAndUpdate({_id: req.params.id}, req.body, function(err, user){
     if(err){
       res.status(500).json({

@@ -2,12 +2,18 @@
   angular.module('mymeanblog')
       .factory('PostService', PostService);
 
-  PostService.$inject = ['$http'];
+  PostService.$inject = ['$http', 'UserService'];
 
-  function PostService($http){
+  function PostService($http, UserService){
     var base = '/posts';
+
     function getAll(){
-      return $http.get(base);
+      var options = {
+        headers: {
+          Authorization: `Bearer ${UserService.getToken()}`
+        }
+      }
+      return $http.get(base, options);
     }
     function getOne(id){
       var url = `${base}/${id}`;
@@ -18,14 +24,24 @@
     }
     function update(post){
       var url = `${base}/${post._id}`;
-      return $http.put(url, post)
+      var options = {
+        headers: {
+          Authorization: `Bearer ${UserService.getToken()}`
+        }
+      }
+      return $http.put(url, post, options)
                   .then(function(response){
                     console.log(response);
                   });
     }
     function deletePost(post){
       var url = `${base}/${post._id}`;
-      return $http.delete(url);
+      var options = {
+        headers: {
+          Authorization: `Bearer ${UserService.getToken()}`
+        }
+      }
+      return $http.delete(url, options);
     }
 
     function randomPosts(number){

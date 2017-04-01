@@ -2,9 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/post.model');
 const _ = require('lodash');
+const signature = process.env.SIGNATURE || require('../secrets').SIGNATURE;
+const expressJWT = require('express-jwt');
+const auth = expressJWT({
+  secret: signature,
+  userProperty: 'payload'
+});
 
-router.get('/posts', function(req, res){
-  Post.find({}, function(err, posts){
+router.get('/posts', auth, function(req, res){
+  Post.find({author: req.payload._id}, function(err, posts){
     if(err){
       res.status(500).json({
         msg: err
@@ -16,7 +22,7 @@ router.get('/posts', function(req, res){
     }
   });
 });
-router.get('/posts/:id', function(req, res){
+router.get('/posts/:id',  function(req, res){
   Post.find({_id: req.params.id}, function(err, posts){
     if(err){
       res.status(500).json({
@@ -43,11 +49,15 @@ router.post('/posts', function(req, res){
     }
   });
 });
-router.put('/posts/:id', function(req, res){
-  Post.findOneAndUpdate({_id: req.params.id}, req.body, function(err, post){
+router.put('/posts/:id', auth, function(req, res){
+  Post.findOneAndUpdate({_id: req.params.id, author: req.payload._id}, req.body, function(err, post){
     if(err){
       res.status(500).json({
         msg: err
+      });
+    } else if (!post){
+      res.status(403).json({
+        msg: 'Unauthorized'
       });
     } else {
       res.status(200).json({
@@ -56,11 +66,15 @@ router.put('/posts/:id', function(req, res){
     }
   });
 });
-router.delete('/posts/:id', function(req, res){
-  Post.remove({_id: req.params.id}, function(err){
+router.delete('/posts/:id', auth, function(req, res){
+  Post.remove({_id: req.params.id, author: req.payload._id}, function(err, post){
     if(err){
       res.status(500).json({
         msg: err
+      });
+    } else if(!post){
+      res.status(403).json({
+        msg: 'Unauthorized'
       });
     } else {
       res.status(200).json({
