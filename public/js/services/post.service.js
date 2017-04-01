@@ -20,10 +20,7 @@
                   });
     }
     function create(post){
-      return $http.post(base, post)
-                  .then(function(response){
-                    console.log(response);
-                  });
+      return $http.post(base, post);
     }
     function update(post){
       var url = `${base}/${post._id}`;
