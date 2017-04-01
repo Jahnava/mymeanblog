@@ -35,7 +35,7 @@
         }
       })
       .when('/edit/:postId', {
-        controller: 'PostController',
+        controller: 'EditController',
         templateUrl: 'html/views/edit.html',
         restricted: {
           access: true

@@ -14,10 +14,7 @@
     }
     function getOne(id){
       var url = `${base}/${id}`;
-      return $http.get(url)
-                  .then(function(response){
-                    console.log(response);
-                  });
+      return $http.get(url);
     }
     function create(post){
       return $http.post(base, post);
