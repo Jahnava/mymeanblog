@@ -2,9 +2,9 @@
   angular.module('mymeanblog')
         .controller('EditController', EditController);
 
-  EditController.$inject = ['$scope', '$routeParams', 'PostService'];
+  EditController.$inject = ['$scope', '$routeParams', 'PostService', '$location'];
 
-  function EditController($scope, $routeParams, PostService){
+  function EditController($scope, $routeParams, PostService, $location){
     $scope.edit = edit;
 
     editInit();
@@ -19,7 +19,13 @@
                   });
     }
     function edit(post){
-      console.log('editing the post');
+      PostService.update(post)
+                .then(function(response){
+                  $location.path('/dashboard');
+                })
+                .catch(function(err){
+                  console.log(err);
+                });
     }
   }
 
