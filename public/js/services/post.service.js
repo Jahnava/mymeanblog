@@ -25,10 +25,7 @@
     }
     function deletePost(post){
       var url = `${base}/${post._id}`;
-      return $http.delete(url)
-                  .then(function(response){
-                    console.log(response);
-                  });
+      return $http.delete(url);
     }
 
     return {

@@ -2,9 +2,9 @@
   angular.module('mymeanblog')
         .controller('DashboardController', DashboardController);
 
-  DashboardController.$inject = ['$scope', 'PostService'];
+  DashboardController.$inject = ['$scope', 'PostService', '$location'];
 
-  function DashboardController($scope, PostService){
+  function DashboardController($scope, PostService, $location){
       $scope.edit = edit;
       $scope.delete = deletePost;
       $scope.posts = []
@@ -20,10 +20,12 @@
                    });
       }
       function edit(post){
-        console.log('moving to the edit page');
+        var url = `/edit/${post._id}`;
+        $location.path(url);
       }
       function deletePost(post){
-        console.log('deleting the post with _id of ' + post._id);
+        PostService.delete(post)
+                   .then(populatePosts); //I did this because .then can run the next function
       }
   }
 }());
