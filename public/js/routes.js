@@ -28,7 +28,7 @@
         }
       })
       .when('/create', {
-        controller: 'PostController',
+        controller: 'CreateController',
         templateUrl: 'html/views/create.html',
         restricted: {
           access: true

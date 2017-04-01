@@ -1,14 +1,13 @@
 (function() {
   angular.module('mymeanblog')
-         .controller('PostController', PostController);
+         .controller('CreateController', CreateController);
 
-  PostController.$inject = ['$scope',
+  CreateController.$inject = ['$scope',
                             'PostService',
-                            '$routeParams',
                             'UserService',
                             '$location'];
 
-  function PostController($scope, PostService, $routeParams, UserService, $location){
+  function CreateController($scope, PostService, UserService, $location){
     $scope.create = create;
 
     function create(post){
