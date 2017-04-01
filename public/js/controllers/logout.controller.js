@@ -2,13 +2,14 @@
     angular.module('mymeanblog')
            .controller('LogoutController', LogoutController);
 
-    LogoutController.$inject = ['$scope'];
+    LogoutController.$inject = ['$scope', 'UserService', '$location'];
 
-    function LogoutController($scope){
+    function LogoutController($scope, UserService, $location){
       $scope.logout = logout;
 
       function logout(){
-        console.log('logging out');
+        UserService.logout();
+        $location.path('/');
       }
     }
 }());

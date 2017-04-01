@@ -50,13 +50,47 @@
                     console.log(response);
                   });
     }
-    function currentUser(){}
+    function currentUser(){
+      if(isLoggedIn()){
+        var token = getToken();
+        var payload = token.split('.')[1];
+        payload = $window.atob(payload);
+        payload = JSON.parse(payload);
+        return {
+          _id: payload._id,
+          email: payload.email
+        }
+      } else {
+        return null;
+      }
+    }
     function saveToken(token){
       localStorage.setItem('mymeanblog-token', token);
     }
-    function getToken(){}
-    function isLoggedIn(){}
-    function logout(){}
+    function getToken(){
+      return localStorage.getItem('mymeanblog-token');
+    }
+    function isLoggedIn(){
+      var token = getToken();
+      var payload;
+      if(token){
+        payload = token.split('.')[1];
+        payload = $window.atob(payload);
+        payload = JSON.parse(payload);
+        var isExpired = payload.exp < Date.now() / 1000;
+        if(isExpired){
+          logout();
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    }
+    function logout(){
+      localStorage.removeItem('mymeanblog-token');
+    }
     return {
       getAll: getAll,
       login: login,
