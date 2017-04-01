@@ -41,6 +41,13 @@
           access: true
         }
       })
+      .when('/blog', {
+        controller: 'BlogController',
+        templateUrl: 'html/views/blog.html',
+        restricted:{
+          access: false
+        }
+      })
       .otherwise({
         redirectTo: '/',
         restricted: {

@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var Post = require('../models/post.model');
+const express = require('express');
+const router = express.Router();
+const Post = require('../models/post.model');
+const _ = require('lodash');
 
 router.get('/posts', function(req, res){
   Post.find({}, function(err, posts){
@@ -67,5 +68,22 @@ router.delete('/posts/:id', function(req, res){
       });
     }
   });
+});
+
+router.get('/posts/random/:number', function(req, res){
+  var number = req.params.number;
+  Post.find({})
+      .populate('author', 'name')
+      .exec(function(err, posts){
+        if(err){
+            res.status(500).json({
+              msg: err
+            });
+          } else {
+            res.status(200).json({
+              posts: _.sampleSize(posts, number)
+            })
+          }
+      });
 });
 module.exports = router;

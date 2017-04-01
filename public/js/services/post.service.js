@@ -28,12 +28,18 @@
       return $http.delete(url);
     }
 
+    function randomPosts(number){
+      var url = `/posts/random/${number}`;
+      return $http.get(url);
+    }
+
     return {
       getAll: getAll,
       getOne: getOne,
       create: create,
       update: update,
-      delete: deletePost
+      delete: deletePost,
+      randomPosts: randomPosts
     }
   }
 }());

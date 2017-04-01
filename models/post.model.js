@@ -19,7 +19,8 @@ var postSchema = mongoose.Schema({
   },
   author:{
     required: true,
-    type: mongoose.Schema.Types.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 });
 
